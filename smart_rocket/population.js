@@ -60,7 +60,7 @@ function Population(mutation_rate , total_rockets) {
         for(let i = 0 ; i < this.population.length; i++){
 
             var fitness_normal = map(this.population[i].get_fitness() , 0 , max_fitness , 0 , 1);
-            var total_data = Math.round(fitness_normal);
+            var total_data = Math.round(fitness_normal * 100);
 
             for(let j = 0 ; j < total_data; j++)
                 this.mating_tools.push(this.population[i]);
