@@ -57,6 +57,8 @@ function Population(mutation_rate , total_rockets) {
 
     this.init_pool_acording_to_fitness = function(max_fitness) {
 
+
+
         for(let i = 0 ; i < this.population.length; i++){
 
             var fitness_normal = map(this.population[i].get_fitness() , 0 , max_fitness , 0 , 1);
@@ -86,8 +88,10 @@ function Population(mutation_rate , total_rockets) {
 
     this.get_child = function() {
 
+
         var mother_index  = Math.floor(Math.random() * (this.mating_tools.length - 1));
         var father_index  = Math.floor(Math.random() * (this.mating_tools.length - 1));
+
 
         var mother = this.mating_tools[mother_index];
         var father = this.mating_tools[father_index];

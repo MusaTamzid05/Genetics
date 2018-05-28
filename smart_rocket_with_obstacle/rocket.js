@@ -10,6 +10,8 @@ function Rocket(position , dna) {
     this.gene_counter = 0;
     this.hit_target = false;
     this.hit_obstacle = false;
+    this.record_dist = 1000;
+    this.finish_time = 0;
 
     this.init = function(position , dna) {
 
@@ -23,25 +25,39 @@ function Rocket(position , dna) {
 
     this.fitness = function() {
 
-        var distance = dist(this.position.x , this.position.y , target.x , target.y);
-        this.fitness_score = pow(1 / distance , 2);
+        if(this.record_dist < 1)
+            this.record_dist = 1;
+
+        this.fitness_score = this.get_fitness_score();
+        this.update_fitness_according_to_env();
+
+
+    };
+
+    this.get_fitness_score = function() {
+
+
+        var fitness_score =  (1 / (this.finish_time * this.record_dist));
+        fitness_score = pow(fitness_score , 4);
+
+        return fitness_score;
+    };
+
+    this.update_fitness_according_to_env = function() {
 
         if(this.hit_obstacle)
-            this.fitness *= 0.1;
+            this.fitness_score *= 0.1;
 
+        if(this.hit_target)
+            this.fitness_score *= 2;
     };
 
     this.run = function() {
 
-        if(this.hit_obstacle)
+        if(this.hit_obstacle || this.hit_target)
             return;
 
-
-        var distance = dist(this.position.x , this.position.y , target.x , target.y);
-
-
-        if(distance < 12)
-            this.hit_target = true;
+        this.check_target();
 
         if(this.hit_target === false)
             this.update_rocket();
@@ -128,8 +144,25 @@ function Rocket(position , dna) {
 
     this.check_target = function() {
 
-        var distance = dist(this.position.x , this.position.y , target.x , target.y);
+        this.update_distance();
+
+        if(this.hit_target === false && target.contains(this.position))
+            this.hit_target = true;
+
+        else if(!this.hit_target)
+            this.finish_time++;
+
 
     };
+
+    this.update_distance = function() {
+
+        var distance = dist(this.position.x , this.position.y , target.position.x , target.position.y);
+
+        if(distance < this.record_dist)
+            this.record_dist = distance;
+
+    };
+
 
 }

@@ -20,7 +20,7 @@ function init_game_parameters() {
 
     lifetime = height;
     life_counter = 0;
-    target = new PVector(width / 2 , 24);
+    target = new  Obstacle(width / 2 - 12 , 24 , 24 , 24);
 }
 
 
@@ -40,7 +40,8 @@ function draw() {
 
     background(255);
     fill(0);
-    ellipse(target.x , target.y , 24 , 24);
+
+    target.display();
 
     draw_obstacles();
     run_simulation();
